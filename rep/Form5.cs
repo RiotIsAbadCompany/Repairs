@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.OleDb;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace rep
+{
+    public partial class Form5 : Form
+    {
+        public Form5()
+        {
+            InitializeComponent();
+        }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
+            button1.Text = "1";
+            button2.Text = "2";
+            button3.Text = "3";
+            button4.Text = "4";
+            button5.Text = "5";
+            button6.Text = "6";
+            
+        }
+        string conStr = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\TCP\repairs.accdb";
+        OleDbConnection dbConnect = new OleDbConnection();
+        void view1()
+        {
+
+            string mySelect = "Select [Repair].Client_id,[Client].Client_name,[Repair].Repair_id,[Repair].Car_id,Car.Car_make,Car.Reg_number,[Repair].In_date FROM( [Repair] INNER JOIN" +
+                " Client " +
+                "ON [Client].Client_id = [Repair].Client_id" +
+                ") INNER JOIN" +
+                " Car" +
+                " ON Car.Car_id = [Repair].Car_id" +
+                " WHERE In_date >= (Now - 1)" +
+                " ORDER BY Car_make, Reg_number ASC";
+            dbConnect.ConnectionString = conStr;
+            dbConnect.Open();
+            OleDbDataAdapter adapt = new OleDbDataAdapter(mySelect, dbConnect);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            dataGridView1.DataSource = dt;
+            dbConnect.Close();
+
+        }
+        void view2()
+        {
+
+            string mySelect = "Select [Repair].Client_id,[Client].Client_name,[Repair].Repair_id,[Repair].Car_id,Car.Car_make,Car.Reg_number,[Repair].In_date FROM( [Repair] INNER JOIN" +
+                " Client " +
+                "ON [Client].Client_id = [Repair].Client_id" +
+                ") INNER JOIN" +
+                " Car" +
+                " ON Car.Car_id = [Repair].Car_id" +
+                " WHERE In_date >= (Now - 1)" +
+                " ORDER BY Car_make, Reg_number ASC";
+            dbConnect.ConnectionString = conStr;
+            dbConnect.Open();
+            OleDbDataAdapter adapt = new OleDbDataAdapter(mySelect, dbConnect);
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            dataGridView1.DataSource = dt;
+            dbConnect.Close();
+
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            view1();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            view2();
+        }
+    }
+}
